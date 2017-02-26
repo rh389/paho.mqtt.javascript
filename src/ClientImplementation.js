@@ -414,11 +414,13 @@ class ClientImplementation {
     // Send all queued messages down socket connection
 
     const socket = this.socket;
-    this._messagesAwaitingDispatch.reverse().forEach(wireMessage => {
-      this._trace('Client._socketSend', wireMessage);
-      socket && socket.send(wireMessage.encode());
-      wireMessage.onDispatched && wireMessage.onDispatched();
-    });
+    var fifo =  this._messagesAwaitingDispatch.reverse();
+    // Send all queued messages down socket connection
+    while ((message = fifo.pop())) {
+        this._trace('Client._socketSend', message);
+        socket && socket.send(message.encode());
+        message.onDispatched && message.onDispatched();
+    }
 
     this.sendPinger && this.sendPinger.reset();
   }
