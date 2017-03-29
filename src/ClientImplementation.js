@@ -414,10 +414,9 @@ class ClientImplementation {
     // Send all queued messages down socket connection
     const socket = this.socket;
 
-    const fifo = this._messagesAwaitingDispatch.reverse();
-
+    // Consume each message and remove it from the queue
     let wireMessage;
-    while ((wireMessage = fifo.pop())) {
+    while ((wireMessage = this._messagesAwaitingDispatch.shift())) {
       this._trace('Client._socketSend', wireMessage);
       socket && socket.send(wireMessage.encode());
       wireMessage.onDispatched && wireMessage.onDispatched();
