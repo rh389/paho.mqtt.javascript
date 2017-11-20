@@ -17,7 +17,6 @@ export default class {
   constructor(client: ClientImplementation, keepAliveIntervalSeconds: number) {
     this._client = client;
     this._keepAliveIntervalMs = keepAliveIntervalSeconds * 1000;
-    this.reset();
   }
 
   _doPing() {

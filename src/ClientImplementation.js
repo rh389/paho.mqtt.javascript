@@ -152,6 +152,8 @@ class ClientImplementation {
 
       this.socket && (this.socket.onopen = () => null);
       this.socket && (this.socket.send(wireMessage.encode()));
+
+      this.sendPinger && this.sendPinger.reset();
     };
 
     this.socket.onmessage = (event) => {
@@ -418,8 +420,6 @@ class ClientImplementation {
       socket && socket.send(wireMessage.encode());
       wireMessage.onDispatched && wireMessage.onDispatched();
     }
-
-    this.sendPinger && this.sendPinger.reset();
   }
 
   /**
