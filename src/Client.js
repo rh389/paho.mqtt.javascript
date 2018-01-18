@@ -101,6 +101,12 @@ export default class Client extends EventEmitter {
      * @type {Message}
      */
     this._client.onMessageArrived = (message) => this.emit('messageReceived', message);
+    
+    /**
+     * @event Client#connected
+     * @type {Boolean}
+     */
+    this._client.onConnected = (reconnect) => this.emit('connected', reconnect);
 
     /**
      * @event Client#connectionLost
