@@ -118,7 +118,7 @@ export default class Client extends EventEmitter {
    * @param {string} [userName] - Authentication username for this connection.
    * @param {string} [password] - Authentication password for this connection.
    * @param {Message} [willMessage] - sent by the server when the client disconnects abnormally.
-   * @param {number} [keepAliveInterval=60] - ping the server every n ms to avoid being disconnected by the remote end.
+   * @param {number} [keepAliveInterval=60] - ping the server every n seconds to avoid being disconnected by the remote end.
    * @param {number} [mqttVersion=4] - protocol version to use (3 or 4).
    * @param {boolean} [cleanSession=true] - if true the client and server persistent state is deleted on successful connect.
    */

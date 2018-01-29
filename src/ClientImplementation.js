@@ -624,6 +624,7 @@ class ClientImplementation {
 
         case MESSAGE_TYPE.PINGRESP:
           // We don't care whether the server is still there (yet)
+          this.sendPinger && this.sendPinger.reset();
           break;
 
         case MESSAGE_TYPE.DISCONNECT:

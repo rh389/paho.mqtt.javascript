@@ -1,7 +1,8 @@
 /** @flow */
 
 import WireMessage from './WireMessage';
-import { MESSAGE_TYPE } from './constants';
+import { ERROR, MESSAGE_TYPE } from './constants';
+import { format } from './util';
 import ClientImplementation from './ClientImplementation';
 
 /**
@@ -11,6 +12,7 @@ import ClientImplementation from './ClientImplementation';
 export default class {
   _client: ClientImplementation;
   _keepAliveIntervalMs: number;
+  isReset: boolean = false;
   pingReq: ArrayBuffer = new WireMessage(MESSAGE_TYPE.PINGREQ).encode();
   timeout: ?number;
 
@@ -21,12 +23,19 @@ export default class {
   }
 
   _doPing() {
-    this._client._trace('Pinger.doPing', 'send PINGREQ');
-    this._client.socket && this._client.socket.send(this.pingReq);
-    this.timeout = setTimeout(() => this._doPing(), this._keepAliveIntervalMs);
+    if (!this.isReset) {
+      this._client._trace('Pinger.doPing', 'Timed out');
+      this._client._disconnected(ERROR.PING_TIMEOUT.code, format(ERROR.PING_TIMEOUT));
+    } else {
+      this.isReset = false;
+      this._client._trace('Pinger.doPing', 'send PINGREQ');
+      this._client.socket && this._client.socket.send(this.pingReq);
+      this.timeout = setTimeout(() => this._doPing(), this._keepAliveIntervalMs);
+    }
   }
 
   reset() {
+    this.isReset = true;
     if (this.timeout) {
       clearTimeout(this.timeout);
       this.timeout = null;
