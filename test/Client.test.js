@@ -20,6 +20,18 @@ describe('client-uris', function () {
     expect(client.uri).toBe(uri);
   });
 
+  test('should create a new client with a valid ws uri', function () {
+    const client = new Client({
+      uri: 'ws://localhost:9000',
+      clientId: 'testclientid',
+      webSocket,
+      storage
+    });
+
+    expect(client).not.toBe(null);
+    expect(client.uri).toBe('ws://localhost:9000');
+  });
+
   test('should fail to create a new client with an invalid ws uri', function () {
     let client = null;
     let error;
