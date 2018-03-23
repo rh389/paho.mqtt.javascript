@@ -29,7 +29,7 @@ describe('client-uris', function () {
     });
 
     expect(client).not.toBe(null);
-    expect(client.uri).toBe(uri);
+    expect(client.uri).toBe('ws://localhost:9000');
   });
 
   test('should fail to create a new client with an invalid ws uri', function () {
