@@ -72,7 +72,7 @@ export default class Client extends EventEmitter {
   constructor({ uri, clientId, storage, webSocket }: ConstructorOptions) {
     super();
 
-    if (!/^(wss?):\/\/((\[(.+)\])|([^\/]+?))(:(\d+))?(\/.*)$/.test(uri)) {
+    if (!/^(wss?):\/\/((\[(.+)\])|([^\/]+?))(:(\d+))?([\/.*]?)$/.test(uri)) {
       throw new Error(format(ERROR.INVALID_ARGUMENT, [typeof uri, 'uri']));
     }
 
