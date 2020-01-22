@@ -411,6 +411,8 @@ class ClientImplementation {
     // Send all queued messages down socket connection
     const socket = this.socket;
 
+    this.sendPinger && this.sendPinger.reset();
+
     // Consume each message and remove it from the queue
     let wireMessage;
     while ((wireMessage = this._messagesAwaitingDispatch.shift())) {
@@ -418,8 +420,6 @@ class ClientImplementation {
       socket && socket.send(wireMessage.encode());
       wireMessage.onDispatched && wireMessage.onDispatched();
     }
-
-    this.sendPinger && this.sendPinger.reset();
   }
 
   /**
